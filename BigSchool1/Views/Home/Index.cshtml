@@ -11,10 +11,11 @@
         <li>
             <div class="date">
                 <div class="month">
-                    @course.DateTime.ToString("MM")
+                    @course.DateTime.ToString("dd")
                 </div>
                 <div class="day">
-                    @course.DateTime.ToString("dd")
+                    @course.DateTime.ToString("MM")
+                    <small> @course.DateTime.ToString("yyyy")</small>
                 </div>
             </div>
             <div class="details">
@@ -28,11 +29,10 @@
                 <span class="category">
                     @course.Category.Name
                 </span>
-                    @if (Model.ShowAction)
-                    {
-                <button data-course-id="@course.Id" class="btn btn-default btn-sm js-toggle-attendance">Going?</button>
-                    }
-
+                @if (Model.ShowAction)
+                {
+                    <button data-course-id="@course.Id" class="btn btn-default btn-sm js-toggle-attendance">Going?</button>
+                }
             </div>
         </li>
     }
@@ -40,18 +40,18 @@
 @section scripts
     {
     <script>
-             $(document).ready(function () {
-                 CoursesController.init();
-                 $(".js-toggle-follow").click(function (e) {
-                     var button = $(e.target);
-                     $.post("/api/followings", { followeeId: button.attr("data-user-id") })
-                     .done(function () {
-                         button.text("Following");
-                     })
-                     .fail(function () {
-                         alert("Something failed!");
-                     });
-                 });
-             });
+        $(document).ready(function () {
+            CoursesController.init();
+            $(".js-toggle-follow").click(function (e) {
+                var button = $(e.target);
+                $.post("/api/followings", { followeeId: button.attr("data-user-id") })
+                    .done(function () {
+                        button.text("Following");
+                    })
+                    .fail(function () {
+                        alert("Something failed!");
+                    });
+            });
+        });
     </script>
 }

@@ -24,7 +24,7 @@ namespace BigSchool1.Controllers
             var viewModel = new CourseViewModel
             {
                 Categories = _dbContext.Categories.ToList(),
-                Heading="Add Course"
+                Heading = "Add Course"
             };
             return View(viewModel);
         }
@@ -66,6 +66,17 @@ namespace BigSchool1.Controllers
                 ShowAction = User.Identity.IsAuthenticated
             };
             return View(viewModel);
+        }
+        [Authorize]
+        public ActionResult Following()
+        {
+            var userId = User.Identity.GetUserId();
+
+            var follow = _dbContext.Followings
+                .Where(a => a.FollowerId == userId)
+                .Select(a => a.Followee)
+                .ToList();
+            return View(follow);
         }
         [Authorize]
         public ActionResult Mine()
@@ -113,5 +124,6 @@ namespace BigSchool1.Controllers
             _dbContext.SaveChanges();
             return RedirectToAction("Index", "Home");
         }
+
     }
 }

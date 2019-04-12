@@ -1,6 +1,6 @@
 ﻿.navbar-inverse
 {
-    background-color:#b200ff;
+    background-color:#808080;
     border-color:#ffffff;
 }
 .navbar-inverse .navbar-nav >li>a
@@ -13,7 +13,7 @@
 }
 .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form
 {
-    border-color:#ff0000;
+    border-color:#808080;
 }
 /* Coure Layout*/
 
@@ -28,7 +28,7 @@
 .course >li .date
 {
     text-align: center;
-    background-color:   #b200ff;
+    background-color:   #808080;
     color:  #ffffff;
     width:  60px;
     border-radius:  8px;

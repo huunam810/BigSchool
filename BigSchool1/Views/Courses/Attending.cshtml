@@ -11,10 +11,11 @@
         <li>
             <div class="date">
                 <div class="month">
-                    @course.DateTime.ToString("MM")
+                    @course.DateTime.ToString("dd-MM")
+                    <small> @course.DateTime.ToString("yyyy")</small>
                 </div>
                 <div class="day">
-                    @course.DateTime.ToString("dd")
+                    <small>@course.DateTime.ToString("HH:mm")</small>
                 </div>
             </div>
             <div class="details">
@@ -30,42 +31,44 @@
                 </span>
                 @if (Model.ShowAction)
                 {
-                    <button data-course-id="@course.Id" class="btn btn-default btn-sm js-toggle-attendance">Going?</button>
+                    <button data-course-id="@course.Id" class="btn btn-info btn-sm js-toggle-attendance">No Going</button>
                 }
-
             </div>
         </li>
     }
 </ul>
-@*
-    @section scripts
-    {
-        <script>
+@section scripts
+{
+    <script>
         $(document).ready(function () {
             $(".js-toggle-attendance").click(function (e) {
                 var button = $(e.target);
-                    $.post("api/attendances", { courseId: button.attr("data-course-id") })
-                    .done(function () {
-                        button
-                            .removeClass("btn-default")
-                            .addClass("btn-info")
-                            .text("Going");
+                if (button.hasClass("btn-info")) {
+                    $.post("/api/attendances", { courseId: button.attr("data-course-id") })
+                        .done(function () {
+                            button
+                                .removeClass("btn-info")
+                                .addClass("btn-default")
+                                .text("No Going");
+                        })
+                        .fail(function () {
+                            alert("something failed");
+                        })
+                } else {
+                    $.ajax({
+                        url: "/api/attendances/" + button.attr("data-course-id"),
+                        method: "DELETE"
                     })
-                    .fail(function () {
-                        alert("Something failed!");
-                    });
+                        .done(function () {
+                            button
+                                .removeClass("btn-default")
+                                .addClass("btn-info")
+                                .text("Going?");
+                        })
+                        .fail(function () {
+                            alert("something failed");
+                        });
+                }
             });
-            $(".js-toggle-follow").click(function (e) {
-                var button = $(e.target);
-                $.post("/api/followings", { followeeId: button.attr("data-user-id") })
-                .done(function () {
-                    button.text("Following");
-                })
-                .fail(function () {
-                    alert("Something failed!");
-                });
-            });
-        });
-        </script>
-    }
-*@
+    </script>
+}

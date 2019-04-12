@@ -1,0 +1,44 @@
+﻿@model IEnumerable<BigSchool1.Models.ApplicationUser>
+@{
+    ViewBag.Title = "Following";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Following</h2>
+<div class="row" style="margin-top: 10px;">
+    <ul class="course">
+        @foreach (var follow in Model)
+        {
+            <li>
+                <div class="date">
+                    <div class="name">
+                        @follow.Name
+                    </div>
+                    <div class="user">
+                        @follow.UserName
+                    </div>
+                </div>
+                <div class="details">
+                    <button class="btn btn-info btn-sm js-toggle-follow" data-user-id="@follow.Id">UnFollow</button>
+                </div>
+            </li>
+        }
+    </ul>
+</div>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $(".js-toggle-follow").click(function (e) {
+                var button = $(e.target);
+                $.post("/api/followings", { followeeId: button.attr("data-user-id") })
+                    .done(function () {
+                        button.text("UnFollow")
+                    })
+                    .fail(function () {
+                        alert("Something failed!");
+                    });
+            });
+        });
+    </script>
+}
